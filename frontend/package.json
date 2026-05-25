@@ -1,9 +1,9 @@
 {
-  "name": "dclaw-app-frontend",
+  "name": "dclaw-trademark-frontend",
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3062",
+    "dev": "next dev --port 3066",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

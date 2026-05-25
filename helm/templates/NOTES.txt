@@ -1,4 +1,4 @@
-DClaw App deployed!
+DClaw Trademark deployed!
 
-Backend: {{ include "dclaw-app.fullname" . }}-backend
-Frontend: {{ include "dclaw-app.fullname" . }}-frontend
+Backend: {{ include "dclaw-trademark.fullname" . }}-backend
+Frontend: {{ include "dclaw-trademark.fullname" . }}-frontend
