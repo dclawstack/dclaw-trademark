@@ -38,7 +38,7 @@ const [loading, setLoading] = useState(false);
       });
       const data = await res.json();
       setTrademarkCheck(data);
-      const extraRes = await fetch(`/checks/${check_id}/watchlist`);
+      const extraRes = await fetch(`/checks/${data.id}/watchlist`);
       const extraData = await extraRes.json();
       setExtraData(extraData);
     } catch (e) {
@@ -91,12 +91,12 @@ const [loading, setLoading] = useState(false);
               <CardTitle>Check Results</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 text-sm">
-              <p><strong>ID:</strong> {check.id}</p>
-              <p><strong>Trademark:</strong> {check.trademark_name}</p>
-              <p><strong>Class:</strong> {check.trademark_class}</p>
-              <p><strong>Availability:</strong> {check.availability_status}</p>
-              <p><strong>Registration Likelihood:</strong> {check.registration_likelihood}</p>
-              <p><strong>Created:</strong> {new Date(check.created_at).toLocaleString()}</p>
+              <p><strong>ID:</strong> {trademarkCheck.id}</p>
+              <p><strong>Trademark:</strong> {trademarkCheck.trademark_name}</p>
+              <p><strong>Class:</strong> {trademarkCheck.trademark_class}</p>
+              <p><strong>Availability:</strong> {trademarkCheck.availability_status}</p>
+              <p><strong>Registration Likelihood:</strong> {trademarkCheck.registration_likelihood}</p>
+              <p><strong>Created:</strong> {new Date(trademarkCheck.created_at).toLocaleString()}</p>
             </CardContent>
           </Card>
           <Card className="md:col-span-2">
@@ -105,7 +105,7 @@ const [loading, setLoading] = useState(false);
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
-                {check.similar_marks.map((item: string, i: number) => (
+                {trademarkCheck.similar_marks.map((item: string, i: number) => (
                   <Badge key={i} variant="secondary">{item}</Badge>
                 ))}
               </div>

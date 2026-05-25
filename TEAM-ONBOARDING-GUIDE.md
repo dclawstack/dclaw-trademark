@@ -69,38 +69,38 @@ The scaffold has placeholder text like `{APP_NAME}` and `{BACKEND_PORT}`. You mu
 
 **Find/replace in these files:**
 
-| File | What to Replace | Example (for CRM) |
-|------|----------------|-------------------|
-| `backend/app/core/config.py` | `DClaw App` → your name | `DClaw CRM` |
-| `backend/app/api/main.py` | `DClaw App` → your name | `DClaw CRM` |
-| `frontend/package.json` | `dclaw-app-frontend` | `dclaw-crm-frontend` |
-| `frontend/src/app/layout.tsx` | `DClaw App` | `DClaw CRM` |
-| `frontend/src/app/page.tsx` | `DClaw App` | `DClaw CRM` |
-| `docker-compose.yml` | `8000` → backend port | `8095` |
-| `docker-compose.yml` | `3000` → frontend port | `3006` |
-| `docker-compose.yml` | `dclaw_app` → DB name | `dclaw_crm` |
+| File | What to Replace | Example (for Trademark) |
+|------|----------------|------------------------|
+| `backend/app/core/config.py` | `DClaw App` → your name | `DClaw Trademark` |
+| `backend/app/api/main.py` | `DClaw App` → your name | `DClaw Trademark` |
+| `frontend/package.json` | `dclaw-app-frontend` | `dclaw-trademark-frontend` |
+| `frontend/src/app/layout.tsx` | `DClaw App` | `DClaw Trademark` |
+| `frontend/src/app/page.tsx` | `DClaw App` | `DClaw Trademark` |
+| `docker-compose.yml` | `8000` → backend port | `8066` |
+| `docker-compose.yml` | `3000` → frontend port | `3066` |
+| `docker-compose.yml` | `dclaw_app` → DB name | `dclaw_trademark` |
 | `AGENTS.md` | `{APP_NAME}`, ports, DB | Fill all placeholders |
 | `PLAN-v1.2.md` | `{APP_NAME}` | Your app name |
 | `README.md` | `{APP_NAME}` | Your app name |
 | `.env.example` | `8000`, `3000`, `dclaw_app` | Your ports and DB |
-| `backend/Dockerfile` | `8000` | `8095` |
-| `frontend/Dockerfile` | `3000` | `3006` |
-| `helm/Chart.yaml` | `dclaw-app` | `dclaw-crm` |
-| `helm/values.yaml` | `dclaw-app` | `dclaw-crm` |
+| `backend/Dockerfile` | `8000` | `8066` |
+| `frontend/Dockerfile` | `3000` | `3066` |
+| `helm/Chart.yaml` | `dclaw-app` | `dclaw-trademark` |
+| `helm/values.yaml` | `dclaw-app` | `dclaw-trademark` |
 
 **Quick way to do all replacements:**
 ```bash
 cd dclaw-YOURAPP
 
 # Replace app name (run for YOUR name)
-sed -i '' 's/DClaw App/DClaw CRM/g' backend/app/core/config.py backend/app/api/main.py frontend/src/app/layout.tsx frontend/src/app/page.tsx
+sed -i '' 's/DClaw App/DClaw Trademark/g' backend/app/core/config.py backend/app/api/main.py frontend/src/app/layout.tsx frontend/src/app/page.tsx
 
-# Replace ports (example: 8095 backend, 3006 frontend)
-sed -i '' 's/8000/8095/g' docker-compose.yml backend/Dockerfile .env.example
-sed -i '' 's/3000/3006/g' docker-compose.yml frontend/Dockerfile .env.example
+# Replace ports (example: 8066 backend, 3066 frontend)
+sed -i '' 's/8000/8066/g' docker-compose.yml backend/Dockerfile .env.example
+sed -i '' 's/3000/3066/g' docker-compose.yml frontend/Dockerfile .env.example
 
 # Replace DB name
-sed -i '' 's/dclaw_app/dclaw_crm/g' docker-compose.yml backend/app/core/config.py .env.example
+sed -i '' 's/dclaw_app/dclaw_trademark/g' docker-compose.yml backend/app/core/config.py .env.example
 ```
 
 ### 1C. Write Your PRODUCT-SPEC.md

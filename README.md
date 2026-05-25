@@ -1,11 +1,11 @@
-# DClaw Scaffold
+# DClaw Trademark
 
-> **The single source of truth for new DClaw app development.**
-> Clone this repo, rename it, fill in your `PRODUCT-SPEC.md`, and hand it to your coding agents.
+> **Trademark Management SaaS — powered by the DClaw Stack.**
+> A vertical SaaS application for trademark search, filing, monitoring, and portfolio management.
 
 ## What This Is
 
-This scaffold contains the **complete boilerplate** for any DClaw vertical SaaS app:
+**DClaw Trademark** is a domain-specific application built on the DClaw Stack:
 - ✅ FastAPI backend with correct SQLAlchemy 2.0 setup
 - ✅ Next.js 14 frontend with Tailwind + pre-built UI components
 - ✅ Docker + docker-compose with working healthchecks
@@ -16,24 +16,38 @@ This scaffold contains the **complete boilerplate** for any DClaw vertical SaaS 
 - ✅ `AGENTS.md` + `PLAN-v1.2.md` templates
 - ✅ Pre-built UI components (no shadcn CLI needed)
 
-## How to Use
+## App Identity
+
+| Setting | Value |
+|---------|-------|
+| App Name | DClaw Trademark |
+| Backend Port | **8066** (FastAPI) |
+| Frontend Port | **3066** (Next.js) |
+| Database | **dclaw_trademark** (PostgreSQL) |
+| Base API Path | `/api/v1` |
+
+## Contributors
+
+| Name | Email | Role |
+|------|-------|------|
+| Rajendra Machani | 01.r.machani@gmail.com | Project Lead |
+
+## Quick Start
 
 ```bash
-# 1. Clone the scaffold
-git clone https://github.com/dclawstack/dclaw-scaffold.git dclaw-YOURAPP
-cd dclaw-YOURAPP
+# 1. Clone the repo
+git clone https://github.com/dclawstack/dclaw-trademark.git
+cd dclaw-trademark
 
-# 2. Find/replace placeholders
-# {APP_NAME}    -> Your app name (e.g., CRM)
-# {BACKEND_PORT}-> Next free port (see port registry below)
-# {FRONTEND_PORT}-> Next free port
-# {DB_NAME}     -> dclaw_yourapp
+# 2. Copy env file
+cp .env.example .env
 
-# 3. Write your PRODUCT-SPEC.md
-# See PRODUCT-SPEC.md.template for the format
+# 3. Start with Docker
+docker compose up -d
 
-# 4. Hand to your coding agents
-# See SCALING-PLAYBOOK.md for the parallel agent workflow
+# Backend:  http://localhost:8066
+# Frontend: http://localhost:3066
+# API Docs: http://localhost:8066/docs
 ```
 
 ## Critical Rules for Agents
@@ -62,8 +76,7 @@ Keep `pytest-asyncio==0.24.0` pinned in `requirements.txt`. v1.3.0 breaks fixtur
 | dclaw-crm | 8095 | 3006 | dclaw_crm |
 | dclaw-finance | 8096 | 3007 | dclaw_finance |
 | dclaw-hr | 8097 | 3008 | dclaw_hr |
-| **TBD #9** | **8098** | **3009** | **dclaw_xxx** |
-| **TBD #10** | **8100** | **3010** | **dclaw_xxx** |
+| **dclaw-trademark** | **8066** | **3066** | **dclaw_trademark** |
 
 > **Rule:** New apps take the next available port. Update this table when assigning.
 
