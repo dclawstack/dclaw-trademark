@@ -136,7 +136,12 @@ export async function updateTrademark(
 }
 
 export async function deleteTrademark(id: string): Promise<void> {
-  await fetch(`${API_BASE}/api/v1/trademarks/${id}`, { method: "DELETE" });
+  const response = await fetch(`${API_BASE}/api/v1/trademarks/${id}`, {
+    method: "DELETE",
+  });
+  if (!response.ok && response.status !== 204) {
+    throw new ApiError(`Delete failed: ${response.status}`, response.status);
+  }
 }
 
 // ── Watchlist API ─────────────────────────────────────────────────────────────

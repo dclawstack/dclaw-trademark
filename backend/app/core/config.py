@@ -17,6 +17,7 @@ class Settings(BaseSettings):
 
     openrouter_api_key: str = ""
     ollama_url: str = "http://localhost:11434"
+    cors_origins: str = ""  # comma-separated list; empty = wildcard (dev only)
 
 
 @lru_cache()

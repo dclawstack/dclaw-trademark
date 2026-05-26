@@ -25,22 +25,20 @@ class SimilarityResult:
 
 
 def _metaphone(name: str) -> str:
-    """Return the Double Metaphone primary code for a name."""
     return jellyfish.metaphone(name.upper())
 
 
 def _normalize(name: str) -> str:
-    """Lowercase, strip punctuation, collapse whitespace."""
     return re.sub(r"\s+", " ", re.sub(r"[^a-z0-9 ]", "", name.lower())).strip()
 
 
 def phonetic_score(name_a: str, name_b: str) -> float:
-    """Jaro-Winkler similarity between the Double Metaphone codes."""
+    """Jaro-Winkler similarity between the Double Metaphone codes of two mark names."""
     meta_a = _metaphone(name_a)
     meta_b = _metaphone(name_b)
     if not meta_a or not meta_b:
         return 0.0
-    return jellyfish.jaro_winkler_similarity(meta_a, meta_b)
+    return float(jellyfish.jaro_winkler_similarity(meta_a, meta_b))
 
 
 def _token_set(name: str) -> set[str]:
@@ -48,7 +46,7 @@ def _token_set(name: str) -> set[str]:
 
 
 def semantic_score(name_a: str, name_b: str) -> float:
-    """Token-overlap Jaccard similarity (cheap, no external model needed)."""
+    """Token-overlap + character Jaro-Winkler similarity between two mark names."""
     tokens_a = _token_set(name_a)
     tokens_b = _token_set(name_b)
     if not tokens_a or not tokens_b:
@@ -56,8 +54,7 @@ def semantic_score(name_a: str, name_b: str) -> float:
     intersection = tokens_a & tokens_b
     union = tokens_a | tokens_b
     jaccard = len(intersection) / len(union)
-    # Also compare character-level Jaro-Winkler on normalized names
-    char_sim = jellyfish.jaro_winkler_similarity(_normalize(name_a), _normalize(name_b))
+    char_sim = float(jellyfish.jaro_winkler_similarity(_normalize(name_a), _normalize(name_b)))
     return (jaccard + char_sim) / 2.0
 
 

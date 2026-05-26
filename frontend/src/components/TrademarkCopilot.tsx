@@ -82,15 +82,21 @@ export function TrademarkCopilot() {
                   {msg.text}
                   {msg.actions && msg.actions.length > 0 && (
                     <div className="mt-2 flex flex-wrap gap-1">
-                      {msg.actions.map((action, j) => (
-                        <a
-                          key={j}
-                          href={action.action}
-                          className="inline-block bg-white border border-indigo-200 text-indigo-600 text-xs rounded-full px-2 py-0.5 hover:bg-indigo-50"
-                        >
-                          {action.label}
-                        </a>
-                      ))}
+                      {msg.actions
+                        .filter((action) =>
+                          action.action.startsWith("/") ||
+                          action.action.startsWith("http://") ||
+                          action.action.startsWith("https://")
+                        )
+                        .map((action, j) => (
+                          <a
+                            key={j}
+                            href={action.action}
+                            className="inline-block bg-white border border-indigo-200 text-indigo-600 text-xs rounded-full px-2 py-0.5 hover:bg-indigo-50"
+                          >
+                            {action.label}
+                          </a>
+                        ))}
                     </div>
                   )}
                 </div>

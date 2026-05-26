@@ -1,9 +1,12 @@
 from typing import Optional
 from uuid import UUID
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel, Field
+from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.database import get_db
+from app.repositories.trademark_repo import TrademarkRepository
 from app.services.class_recommender import suggest_classes
 from app.services.copilot import chat
 
@@ -27,9 +30,15 @@ async def suggest_nice_classes(payload: ClassSuggestionRequest):
 
 
 @router.post("/copilot/chat")
-async def copilot_chat(payload: CopilotRequest):
-    result = await chat(
-        message=payload.message,
-        trademark_context=payload.trademark_context,
-    )
+async def copilot_chat(payload: CopilotRequest, db: AsyncSession = Depends(get_db)):
+    context = payload.trademark_context
+    if payload.trademark_id and not context:
+        repo = TrademarkRepository(db)
+        tm = await repo.get_by_id(payload.trademark_id)
+        if tm:
+            context = (
+                f"Trademark: {tm.name} | Owner: {tm.owner} | "
+                f"Status: {tm.status} | Jurisdiction: {tm.jurisdiction}"
+            )
+    result = await chat(message=payload.message, trademark_context=context)
     return result

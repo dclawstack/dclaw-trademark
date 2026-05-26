@@ -72,7 +72,9 @@ async def _llm_recommend(description: str) -> list[dict] | None:
         except Exception:
             pass
 
-    # Fallback: Ollama
+    # Fallback: Ollama — validate URL scheme to prevent SSRF
+    if not settings.ollama_url.startswith(("http://", "https://")):
+        return None
     try:
         async with httpx.AsyncClient(timeout=20) as client:
             resp = await client.post(
