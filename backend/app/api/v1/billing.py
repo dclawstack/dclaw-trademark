@@ -67,6 +67,7 @@ async def create_checkout(payload: CheckoutRequest, db: AsyncSession = Depends(g
             customer_email=payload.email,
             success_url=payload.success_url,
             cancel_url=payload.cancel_url,
+            metadata={"plan": payload.plan},
         )
         return {"session_id": session.id, "checkout_url": session.url}
     except ImportError:
@@ -103,7 +104,10 @@ async def stripe_webhook(
     if event_type == "checkout.session.completed":
         email = data.get("customer_email", "")
         sub_id = data.get("subscription")
-        plan = "pro"
+        # Derive plan from Stripe metadata; fall back to "pro" if unset
+        plan = data.get("metadata", {}).get("plan") or "pro"
+        if plan not in PLANS:
+            plan = "pro"
         result = await db.execute(
             select(Subscription).where(Subscription.customer_email == email)
         )

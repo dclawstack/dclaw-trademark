@@ -49,11 +49,11 @@ async def _run_watch_scan() -> None:
 async def _run_deadline_overdue_check() -> None:
     """Mark any Pending deadlines whose due_date is in the past as Overdue."""
     try:
-        from datetime import datetime
+        from app.core.utils import utc_now
         from app.models.deadline import DeadlineAlert
 
         async with async_session_factory() as db:
-            now = datetime.utcnow()
+            now = utc_now()
             result = await db.execute(
                 select(DeadlineAlert).where(
                     DeadlineAlert.status == "Pending",

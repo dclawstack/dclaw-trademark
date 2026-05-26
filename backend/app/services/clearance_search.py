@@ -45,7 +45,7 @@ class SearchResult:
         self.conflict_type = "Phonetic" if ph > sem else ("Semantic" if sem > ph else "Combined")
 
 
-def _score_mark(name: str, mark: dict) -> Optional[SearchResult]:
+def _score_mark(name: str, mark: dict) -> SearchResult:
     sim = compute_similarity(name, mark["name"])
     return SearchResult(
         name=mark["name"],
