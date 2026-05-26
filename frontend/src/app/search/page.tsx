@@ -73,13 +73,16 @@ export default function SearchPage() {
             <div className="flex flex-col gap-2">
               <Label htmlFor="jurisdiction">Jurisdiction (optional)</Label>
               <Select
+                id="jurisdiction"
                 value={jurisdiction}
-                onValueChange={setJurisdiction}
-                options={JURISDICTIONS.map((j) => ({
-                  value: j,
-                  label: j || "All jurisdictions",
-                }))}
-              />
+                onChange={(e) => setJurisdiction(e.target.value)}
+              >
+                {JURISDICTIONS.map((j) => (
+                  <option key={j} value={j}>
+                    {j || "All jurisdictions"}
+                  </option>
+                ))}
+              </Select>
             </div>
             <Button type="submit" disabled={loading || !query.trim()}>
               {loading ? "Searching…" : "Search"}
