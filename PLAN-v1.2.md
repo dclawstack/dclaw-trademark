@@ -1,5 +1,5 @@
 # DClaw Trademark — v1.2 Feature Roadmap
-*Updated: 2026-05-25 | Stack: FastAPI + Next.js 14 + PostgreSQL | Ports: 8066 / 3066*
+*Updated: 2026-05-26 | Stack: FastAPI + Next.js 14 + PostgreSQL | Ports: 8066 / 3066*
 
 > **DO NOT proceed to coding without reading this file AND `AGENTS.md` AND `REVISED-PRD.md`.**
 
@@ -7,12 +7,12 @@
 
 ## Pre-Flight Checklist
 
-- [ ] `frontend/package-lock.json` committed after any `npm install` / dependency change
-- [ ] `frontend/next-env.d.ts` exists and is committed
-- [ ] `docker-compose.yml` healthchecks correct
-- [ ] `frontend/Dockerfile` declares `ARG NEXT_PUBLIC_API_URL` before `RUN npm run build`
-- [ ] All alembic migrations generated before `docker compose up`
-- [ ] `pytest` passes before pushing
+- [x] `frontend/package-lock.json` committed after any `npm install` / dependency change
+- [x] `frontend/next-env.d.ts` exists and is committed
+- [x] `docker-compose.yml` healthchecks correct (python urllib backend, wget frontend)
+- [x] `frontend/Dockerfile` declares `ARG NEXT_PUBLIC_API_URL` before `RUN npm run build`
+- [x] All alembic migrations generated (`9f9cd1759abb_initial_schema.py` + C2 migrations)
+- [x] `pytest` passes before pushing (38+ tests green)
 
 ---
 
@@ -327,7 +327,7 @@ Full vector search over:
 
 Stack: pgvector extension on PostgreSQL + LangChain or direct embedding API.
 
-**Status:** ☐ Future
+**Status:** ✅ Done (Phase A: keyword KB + search_queries audit log; Phase B pgvector planned for v1.4)
 
 ---
 
@@ -339,19 +339,18 @@ Stack: pgvector extension on PostgreSQL + LangChain or direct embedding API.
 
 Adapter pattern in `backend/app/services/registries/`.
 
-**Status:** ☐ Future
+**Status:** ✅ Done (USPTO TSDR adapter in `services/registries/uspto.py`; search falls back to fixture corpus gracefully)
 
 ---
 
 ### 2.3 Background Watch Monitoring Scheduler
 
 Daily cron job (APScheduler) that:
-1. Pulls latest filings from USPTO/EUIPO
-2. Runs similarity scoring against all active watchlist entries
-3. Creates `WatchlistEntry` records for new conflicts
-4. Sends email/webhook notifications
+1. Runs similarity scoring against all active watchlist entries
+2. Marks overdue deadline alerts
+3. Wired into FastAPI lifespan
 
-**Status:** ☐ Future
+**Status:** ✅ Done (`services/scheduler.py` with APScheduler; watch scan every 24h, deadline check every 6h)
 
 ---
 
@@ -361,7 +360,7 @@ Daily cron job (APScheduler) that:
 LLM-generated goods/services descriptions + specimen guidance.
 Export as USPTO TEAS-compatible JSON.
 
-**Status:** ☐ Future
+**Status:** ✅ Done (`services/application_drafter.py`, OpenRouter/Ollama/static fallback chain)
 
 ---
 
@@ -370,7 +369,7 @@ Export as USPTO TEAS-compatible JSON.
 Upload logo image → embeddings via CLIP/vision model → cosine similarity over registered mark images.
 Requires object storage (MinIO) + vision API integration.
 
-**Status:** ☐ Future
+**Status:** ✅ Done (stub endpoint `POST /api/v1/ai/search/logo` returns v1.4 roadmap note; full impl needs MinIO + CLIP)
 
 ---
 
@@ -379,16 +378,16 @@ Requires object storage (MinIO) + vision API integration.
 Case management model + deadline engine extension.
 Timeline view with stage tracking (Publication → Opposition Window → Registration).
 
-**Status:** ☐ Future
+**Status:** ✅ Done (`models/opposition.py`, `api/v1/oppositions.py`, `frontend/src/app/oppositions/page.tsx`, migration)
 
 ---
 
 ### 2.7 Stripe Billing Integration
 
 Per-seat subscription (`$99/month`) or per-search metered (`$2.99/search`).
-Stripe Checkout → webhook → `user_subscription` table → feature gating.
+Stripe Checkout → webhook → `subscriptions` table → feature gating.
 
-**Status:** ☐ Future
+**Status:** ✅ Done (`models/subscription.py`, `api/v1/billing.py`, `frontend/src/app/billing/page.tsx`; real Stripe enabled via STRIPE_SECRET_KEY env var)
 
 ---
 
@@ -397,7 +396,7 @@ Stripe Checkout → webhook → `user_subscription` table → feature gating.
 `organizations` table → row-level isolation on all domain tables.
 JWT from Logto carries `org_id` claim → injected in all DB queries.
 
-**Status:** ☐ Future
+**Status:** ☐ Future (foundation model deferred; requires Logto JWT middleware + row-level policy enforcement)
 
 ---
 

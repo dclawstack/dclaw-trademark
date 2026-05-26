@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
 from app.repositories.trademark_repo import TrademarkRepository
+from app.services.application_drafter import draft_application
 from app.services.class_recommender import suggest_classes
 from app.services.copilot import chat
 
@@ -42,3 +43,28 @@ async def copilot_chat(payload: CopilotRequest, db: AsyncSession = Depends(get_d
             )
     result = await chat(message=payload.message, trademark_context=context)
     return result
+
+
+class DraftApplicationRequest(BaseModel):
+    name: str = Field(..., min_length=1, max_length=255)
+    owner: str = Field(..., min_length=1, max_length=255)
+    goods_services_description: str = Field(..., min_length=10, max_length=2000)
+
+
+@router.post("/draft-application")
+async def draft_trademark_application(payload: DraftApplicationRequest):
+    result = await draft_application(
+        name=payload.name,
+        owner=payload.owner,
+        goods_services_description=payload.goods_services_description,
+    )
+    return result
+
+
+@router.post("/search/logo")
+async def logo_similarity_search():
+    return {
+        "status": "not_implemented",
+        "message": "Logo / visual similarity search is planned for v1.4. It requires object storage (MinIO) and a vision embedding model (CLIP). Coming soon.",
+        "planned_version": "v1.4",
+    }

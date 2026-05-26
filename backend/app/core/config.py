@@ -18,6 +18,8 @@ class Settings(BaseSettings):
     openrouter_api_key: str = ""
     ollama_url: str = "http://localhost:11434"
     cors_origins: str = ""  # comma-separated list; empty = wildcard (dev only)
+    stripe_secret_key: str = ""
+    stripe_webhook_secret: str = ""
 
 
 @lru_cache()

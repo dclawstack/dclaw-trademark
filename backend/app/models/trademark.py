@@ -10,6 +10,7 @@ from app.models.base import Base
 
 if TYPE_CHECKING:
     from app.models.deadline import DeadlineAlert
+    from app.models.opposition import OppositionCase
     from app.models.watchlist import WatchlistEntry
 
 
@@ -44,6 +45,12 @@ class Trademark(Base):
     )
     deadlines: Mapped[List["DeadlineAlert"]] = relationship(
         "DeadlineAlert",
+        lazy="selectin",
+        cascade="all, delete-orphan",
+        back_populates="trademark",
+    )
+    oppositions: Mapped[List["OppositionCase"]] = relationship(
+        "OppositionCase",
         lazy="selectin",
         cascade="all, delete-orphan",
         back_populates="trademark",
