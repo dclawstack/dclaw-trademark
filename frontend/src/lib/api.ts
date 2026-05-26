@@ -136,7 +136,12 @@ export async function updateTrademark(
 }
 
 export async function deleteTrademark(id: string): Promise<void> {
-  await fetch(`${API_BASE}/api/v1/trademarks/${id}`, { method: "DELETE" });
+  const response = await fetch(`${API_BASE}/api/v1/trademarks/${id}`, {
+    method: "DELETE",
+  });
+  if (!response.ok && response.status !== 204) {
+    throw new ApiError(`Delete failed: ${response.status}`, response.status);
+  }
 }
 
 // ── Watchlist API ─────────────────────────────────────────────────────────────
@@ -159,6 +164,102 @@ export async function upcomingDeadlines(
   days = 30
 ): Promise<{ items: DeadlineAlert[]; total: number }> {
   return fetchJson(`/api/v1/deadlines/upcoming?days=${days}`);
+}
+
+// ── Nice Classes API ──────────────────────────────────────────────────────────
+
+export interface NiceClass {
+  class_number: number;
+  title: string;
+  description: string;
+  examples: string[];
+}
+
+export async function listNiceClasses(keyword = ""): Promise<NiceClass[]> {
+  const qs = keyword ? `?keyword=${encodeURIComponent(keyword)}` : "";
+  return fetchJson(`/api/v1/classes${qs}`);
+}
+
+export async function getNiceClass(classNumber: number): Promise<NiceClass> {
+  return fetchJson(`/api/v1/classes/${classNumber}`);
+}
+
+// ── Search API ────────────────────────────────────────────────────────────────
+
+export interface SearchResultItem {
+  name: string;
+  owner: string;
+  jurisdiction: string;
+  status: string;
+  classes: number[];
+  application_number: string;
+  registration_date: string | null;
+  phonetic_score: number;
+  semantic_score: number;
+  similarity_score: number;
+  risk_level: "Low" | "Medium" | "High" | "Identical";
+  conflict_type: string;
+}
+
+export interface SearchResponse {
+  query: string;
+  total: number;
+  results: SearchResultItem[];
+}
+
+export async function runClearanceSearch(
+  name: string,
+  classes?: number[],
+  jurisdiction?: string,
+  minScore = 0.2
+): Promise<SearchResponse> {
+  return fetchJson("/api/v1/search", {
+    method: "POST",
+    body: JSON.stringify({ name, classes, jurisdiction, min_score: minScore }),
+  });
+}
+
+// ── AI API ────────────────────────────────────────────────────────────────────
+
+export interface ClassSuggestion {
+  class_number: number;
+  title: string;
+  confidence: number;
+  reasoning: string;
+}
+
+export async function suggestClasses(
+  goodsServicesDescription: string
+): Promise<{ description: string; suggestions: ClassSuggestion[] }> {
+  return fetchJson("/api/v1/ai/suggest-classes", {
+    method: "POST",
+    body: JSON.stringify({ goods_services_description: goodsServicesDescription }),
+  });
+}
+
+export interface CopilotAction {
+  label: string;
+  action: string;
+}
+
+export interface CopilotResponse {
+  reply: string;
+  suggested_actions: CopilotAction[];
+}
+
+export async function copilotChat(
+  message: string,
+  trademarkId?: string,
+  trademarkContext?: string
+): Promise<CopilotResponse> {
+  return fetchJson("/api/v1/ai/copilot/chat", {
+    method: "POST",
+    body: JSON.stringify({
+      message,
+      trademark_id: trademarkId,
+      trademark_context: trademarkContext,
+    }),
+  });
 }
 
 // ── Health ────────────────────────────────────────────────────────────────────
