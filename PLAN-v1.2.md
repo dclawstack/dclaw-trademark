@@ -91,7 +91,7 @@ Fields: `id` (UUID), `name`, `owner`, `status` (Pending/Registered/Refused/Aband
 
 Relationships: → `TrademarkClass` (1:M), → `WatchlistEntry` (1:M), → `DeadlineAlert` (1:M)
 
-**Status:** ☐ Not started
+**Status:** ✅ Done
 
 ---
 
@@ -101,7 +101,7 @@ Relationships: → `TrademarkClass` (1:M), → `WatchlistEntry` (1:M), → `Dead
 
 Fields: `id`, `trademark_id` (FK→CASCADE), `nice_class_number` (1-45), `description`, `created_at`
 
-**Status:** ☐ Not started
+**Status:** ✅ Done
 
 ---
 
@@ -115,7 +115,7 @@ WatchlistEntry fields: `id`, `trademark_id` (FK→CASCADE), `conflicting_mark_na
 DeadlineAlert fields: `id`, `trademark_id` (FK→CASCADE), `deadline_type`
 (RENEWAL/RESPONSE/OPPOSITION/STATEMENT_OF_USE), `due_date`, `status` (Pending/Completed/Dismissed/Overdue), `notes`
 
-**Status:** ☐ Not started
+**Status:** ✅ Done
 
 ---
 
@@ -131,7 +131,7 @@ Endpoints:
 - `PUT    /api/v1/trademarks/{id}` — update
 - `DELETE /api/v1/trademarks/{id}` — delete
 
-**Status:** ☐ Not started
+**Status:** ✅ Done
 
 ---
 
@@ -148,7 +148,7 @@ Endpoints:
 - `PUT      /api/v1/deadlines/{id}` — update status
 - `DELETE   /api/v1/deadlines/{id}`
 
-**Status:** ☐ Not started
+**Status:** ✅ Done
 
 ---
 
@@ -159,7 +159,7 @@ Endpoints:
 
 Creates: `trademarks`, `trademark_classes`, `watchlist_entries`, `deadline_alerts`
 
-**Status:** ☐ Not started
+**Status:** ✅ Done
 
 ---
 
@@ -169,7 +169,7 @@ Creates: `trademarks`, `trademark_classes`, `watchlist_entries`, `deadline_alert
 
 Required for DPanel app registry integration.
 
-**Status:** ☐ Not started
+**Status:** ✅ Done
 
 ---
 
@@ -179,7 +179,7 @@ Required for DPanel app registry integration.
 `frontend/src/app/portfolio/[id]/page.tsx` (detail with classes/watchlist/deadlines tabs),
 `frontend/src/lib/api.ts` (typed trademark API functions)
 
-**Status:** ☐ Not started
+**Status:** ✅ Done
 
 ---
 
@@ -190,7 +190,7 @@ Required for DPanel app registry integration.
 
 Coverage: CRUD lifecycle, validation errors, 404s, cascade deletes
 
-**Status:** ☐ Not started
+**Status:** ✅ Done
 
 ---
 
@@ -206,7 +206,7 @@ Embed all 45 Nice classes with canonical descriptions. Expose:
 - `GET /api/v1/classes` — list all classes
 - `GET /api/v1/classes/{number}` — description + examples
 
-**Status:** ☐ Not started
+**Status:** ✅ Done
 
 ---
 
@@ -220,7 +220,7 @@ Phase B: USPTO TESS API adapter (real search).
 Endpoint: `POST /api/v1/search` — `{name, classes[], jurisdiction}`
 Returns: list of conflicting marks with similarity placeholders.
 
-**Status:** ☐ Not started
+**Status:** ✅ Done
 
 ---
 
@@ -236,7 +236,7 @@ Algorithms:
 
 Used by search endpoint AND watchlist conflict detection.
 
-**Status:** ☐ Not started
+**Status:** ✅ Done
 
 ---
 
@@ -252,7 +252,7 @@ Rules:
 Expose: `GET /api/v1/deadlines/upcoming?days=30`
 Returns deadlines due within N days across all portfolio marks.
 
-**Status:** ☐ Not started
+**Status:** ✅ Done
 
 ---
 
@@ -269,7 +269,7 @@ Strategy:
 2. LLM call via OpenRouter (if OPENROUTER_API_KEY set) for ambiguous cases
 3. Falls back to Ollama (if OLLAMA_URL reachable)
 
-**Status:** ☐ Not started
+**Status:** ✅ Done
 
 ---
 
@@ -287,7 +287,7 @@ Phase B: RAG over user's own portfolio + USPTO classification guidelines.
 
 Fallback chain: OpenRouter → Ollama → static response.
 
-**Status:** ☐ Not started
+**Status:** ✅ Done
 
 ---
 
@@ -299,7 +299,7 @@ Fallback chain: OpenRouter → Ollama → static response.
 Features: conflict cards with similarity score bars, risk level badges,
 "Dismiss" / "Flag for review" actions.
 
-**Status:** ☐ Not started
+**Status:** ✅ Done
 
 ---
 
@@ -310,7 +310,7 @@ Features: conflict cards with similarity score bars, risk level badges,
 Features: search form (name + class selector + jurisdiction), result cards with
 risk badges, one-click "Add to Portfolio" from results.
 
-**Status:** ☐ Not started
+**Status:** ✅ Done
 
 ---
 
