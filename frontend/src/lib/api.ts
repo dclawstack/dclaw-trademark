@@ -166,6 +166,104 @@ export async function upcomingDeadlines(
   return fetchJson(`/api/v1/deadlines/upcoming?days=${days}`);
 }
 
+// ── Opposition API ────────────────────────────────────────────────────────────
+
+export interface OppositionCase {
+  id: string;
+  trademark_id: string;
+  case_number: string | null;
+  case_type: string;
+  stage: string;
+  opposing_party: string | null;
+  opposing_counsel: string | null;
+  filing_date: string | null;
+  response_deadline: string | null;
+  hearing_date: string | null;
+  outcome: string | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export async function listOppositions(
+  trademarkId: string
+): Promise<{ items: OppositionCase[]; total: number }> {
+  return fetchJson(`/api/v1/trademarks/${trademarkId}/oppositions`);
+}
+
+export async function createOpposition(
+  trademarkId: string,
+  data: Partial<OppositionCase>
+): Promise<OppositionCase> {
+  return fetchJson(`/api/v1/trademarks/${trademarkId}/oppositions`, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}
+
+export async function updateOpposition(
+  caseId: string,
+  data: Partial<OppositionCase>
+): Promise<OppositionCase> {
+  return fetchJson(`/api/v1/oppositions/${caseId}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+}
+
+// ── AI Draft Application API ──────────────────────────────────────────────────
+
+export interface DraftApplicationResponse {
+  goods_services: string;
+  specimen_guidance: string;
+  classes: number[];
+  disclaimers: string[];
+  teas_json: Record<string, unknown>;
+}
+
+export async function draftApplication(
+  name: string,
+  owner: string,
+  goodsServicesDescription: string
+): Promise<DraftApplicationResponse> {
+  return fetchJson("/api/v1/ai/draft-application", {
+    method: "POST",
+    body: JSON.stringify({
+      name,
+      owner,
+      goods_services_description: goodsServicesDescription,
+    }),
+  });
+}
+
+// ── Billing API ───────────────────────────────────────────────────────────────
+
+export interface BillingPlan {
+  plan: string;
+  price_usd: number;
+  search_credits: number;
+  label: string;
+}
+
+export async function listBillingPlans(): Promise<BillingPlan[]> {
+  return fetchJson("/api/v1/billing/plans");
+}
+
+export async function createCheckout(
+  email: string,
+  plan: string
+): Promise<{ session_id: string; checkout_url: string }> {
+  return fetchJson("/api/v1/billing/checkout", {
+    method: "POST",
+    body: JSON.stringify({
+      email,
+      plan,
+      success_url: `${window.location.origin}/billing/success`,
+      cancel_url: `${window.location.origin}/billing`,
+    }),
+  });
+}
+
 // ── Nice Classes API ──────────────────────────────────────────────────────────
 
 export interface NiceClass {

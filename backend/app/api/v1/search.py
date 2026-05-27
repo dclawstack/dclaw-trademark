@@ -1,8 +1,10 @@
 from typing import Optional
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel, Field
+from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.database import get_db
 from app.services.clearance_search import run_clearance_search
 
 router = APIRouter()
@@ -16,11 +18,15 @@ class SearchRequest(BaseModel):
 
 
 @router.post("")
-async def clearance_search(payload: SearchRequest):
-    results = run_clearance_search(
+async def clearance_search(
+    payload: SearchRequest,
+    db: AsyncSession = Depends(get_db),
+):
+    results = await run_clearance_search(
         name=payload.name,
         classes=payload.classes,
         jurisdiction=payload.jurisdiction,
         min_score=payload.min_score,
+        db=db,
     )
     return {"query": payload.name, "total": len(results), "results": results}

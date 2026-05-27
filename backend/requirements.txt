@@ -9,3 +9,4 @@ httpx>=0.26.0
 pytest>=7.4.0
 pytest-asyncio==0.24.0
 jellyfish>=1.0.0
+apscheduler>=3.10.0
