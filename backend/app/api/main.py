@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.core.database import init_db
 from app.api.routes import health
-from app.api.v1 import ai, billing, classes, deadlines, oppositions, search, trademarks, watchlist
+from app.api.v1 import ai, billing, classes, deadlines, demo, oppositions, search, trademarks, watchlist
 from app.services.scheduler import start_scheduler, stop_scheduler
 
 
@@ -43,3 +43,4 @@ app.include_router(classes.router, prefix="/api/v1/classes", tags=["nice-classes
 app.include_router(search.router, prefix="/api/v1/search", tags=["search"])
 app.include_router(ai.router, prefix="/api/v1/ai", tags=["ai"])
 app.include_router(billing.router, prefix="/api/v1/billing", tags=["billing"])
+app.include_router(demo.router, prefix="/api/v1", tags=["demo"])

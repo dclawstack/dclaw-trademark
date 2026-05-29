@@ -21,6 +21,8 @@ class Settings(BaseSettings):
     stripe_secret_key: str = ""
     stripe_webhook_secret: str = ""
 
+    enable_demo_mode: bool = False
+
 
 @lru_cache()
 def get_settings() -> Settings:

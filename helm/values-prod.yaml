@@ -1,0 +1,25 @@
+# Cloud / production overrides. Use with:
+#   helm install dclaw-trademark ./helm -n <ns> -f values-prod.yaml
+image:
+  backend:
+    repository: ghcr.io/dclawstack/dclaw-trademark-backend
+    tag: latest
+    pullPolicy: IfNotPresent
+  frontend:
+    repository: ghcr.io/dclawstack/dclaw-trademark-frontend
+    tag: latest
+    pullPolicy: IfNotPresent
+service:
+  frontend:
+    type: ClusterIP
+    port: 3066
+ingress:
+  enabled: true
+  className: traefik
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  host: trademark.dclawstack.io
+  tls:
+    - secretName: dclaw-trademark-tls
+      hosts:
+        - trademark.dclawstack.io

@@ -1,4 +1,0 @@
-DClaw Trademark deployed!
-
-Frontend: http://dclaw-trademark.local
-Backend API: http://dclaw-trademark-backend:8141
